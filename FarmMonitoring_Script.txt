@@ -1,0 +1,259 @@
+DROP TABLE Sensor CASCADE CONSTRAINTS;
+DROP TABLE Farmland CASCADE CONSTRAINTS;
+DROP TABLE Farm CASCADE CONSTRAINTS;
+DROP TABLE SensorReading;
+DROP TABLE WeatherData;
+DROP TABLE SoilData;
+
+CREATE TABLE Farm (
+  FarmID NUMBER(5),
+  FarmName VARCHAR2(20),
+  Owner VARCHAR2(20),
+  Locations VARCHAR2(25),
+  Dimensions DECIMAL(7,2),
+  CONSTRAINT Farm_FarmID_PK PRIMARY KEY(FarmID));
+
+CREATE TABLE Farmland (
+  FieldID NUMBER(5),
+  FarmID NUMBER(5),
+  FarmlandName VARCHAR2(20),
+  Dimensions DECIMAL(7,2),
+  SoilType VARCHAR2(10),
+  CONSTRAINT Field_FieldID_PK PRIMARY KEY(FieldID),
+  CONSTRAINT Field_FarmID_FK FOREIGN KEY(FarmID) REFERENCES Farm);
+
+CREATE TABLE Sensor (
+  SensorID NUMBER(5),
+  FieldID NUMBER(5),
+  Types VARCHAR2(20),
+  InstallationDate DATE,
+  SensorStatus VARCHAR2(10),
+  CONSTRAINT Sensor_SensorID_PK PRIMARY KEY(SensorID),
+  CONSTRAINT Sensor_FieldID_FK FOREIGN KEY(FieldID) REFERENCES Farmland);
+
+CREATE TABLE SensorReading (
+  ReadingID NUMBER(5) NOT NULL,
+  SensorID NUMBER(5) NOT NULL,
+  Datetime TIMESTAMP NOT NULL,
+  Readings VARCHAR2(10) NOT NULL,
+  CONSTRAINT SensorReading_ReadingID_PK PRIMARY KEY(ReadingID),
+  CONSTRAINT SensorReading_SensorID_FK FOREIGN KEY(SensorID) REFERENCES Sensor);
+
+CREATE TABLE WeatherData (
+  WeatherDataID NUMBER(5) NOT NULL,
+  FieldID NUMBER(5) NOT NULL,
+  WeatherDate DATE NOT NULL,
+  Temperature VARCHAR2(10),
+  Rainfall VARCHAR2(10),
+  Humidity VARCHAR2(10),
+  CONSTRAINT WeatherData_WeatherDataID_PK PRIMARY KEY(WeatherDataID),
+  CONSTRAINT WeatherData_FieldID_FK FOREIGN KEY(FieldID) REFERENCES Farmland);
+
+CREATE TABLE SoilData (
+  SoilDataID NUMBER(5) NOT NULL,
+  FieldID NUMBER(5) NOT NULL,
+  SoilDate DATE NOT NULL,
+  MoistureLevel VARCHAR2(10),
+  pHLevel DECIMAL(5,2),
+  NutrientContent VARCHAR2(20),
+  CONSTRAINT SoilData_SoilDataID_PK PRIMARY KEY(SoilDataID),
+  CONSTRAINT SoilData_FieldID_FK FOREIGN KEY(FieldID) REFERENCES Farmland);
+
+INSERT ALL
+    INTO Farm (FarmID, FarmName, Owner, Locations, Dimensions)
+    VALUES ('001', 'KebunSayur', 'Ahmad', 'Sekinchan', '50')
+    INTO Farm (FarmID, FarmName, Owner, Locations, Dimensions)
+    VALUES ('002', 'SunnyFarm', 'Syafiq', 'Bukit Besar', '75')
+    INTO Farm (FarmID, FarmName, Owner, Locations, Dimensions)
+    VALUES ('003', 'RiverFarm', 'Anas', 'Titi Tinggi', '100')
+    INTO Farm (FarmID, FarmName, Owner, Locations, Dimensions)
+    VALUES ('004', 'Cactus Valley', 'Kumar', 'Brinchang', '75')
+    INTO Farm (FarmID, FarmName, Owner, Locations, Dimensions)
+    VALUES ('005', 'Farm Fresh UPM', 'Loi Tuan', 'Serdang', '100')
+    INTO Farm (FarmID, FarmName, Owner, Locations, Dimensions)
+    VALUES ('006', 'Desa Cattle', 'Zainal', 'Kundasang', '120')
+    INTO Farm (FarmID, FarmName, Owner, Locations, Dimensions)
+    VALUES ('007', 'Gurun Durian Orchard', 'Saidin', 'Sg Petani', '60')
+    INTO Farm (FarmID, FarmName, Owner, Locations, Dimensions)
+    VALUES ('008', 'Hami Ecofarms', 'Chee Choy', 'Batu Gajah', '90')
+    INTO Farm (FarmID, FarmName, Owner, Locations, Dimensions)
+    VALUES ('009', 'Saanen Dairy Farm', 'Ho Juan', 'Balik Pulau', '110')
+    INTO Farm (FarmID, FarmName, Owner, Locations, Dimensions)
+    VALUES ('010', 'Star Fish Farm', 'Adam', 'Kulai', '95')
+    INTO Farm (FarmID, FarmName, Owner, Locations, Dimensions)
+    VALUES ('011', 'Harumango Farm', 'Rick Cheng', 'Bukit Chuping', '130')
+    INTO Farm (FarmID, FarmName, Owner, Locations, Dimensions)
+    VALUES ('012', 'Perlis Vineyard', 'Sazali', 'Kangar', '55')
+    INTO Farm (FarmID, FarmName, Owner, Locations, Dimensions)
+    VALUES ('013', 'Agrotech Profarm', 'Subhash', 'Gopeng', '75')
+    INTO Farm (FarmID, FarmName, Owner, Locations, Dimensions)
+    VALUES ('014', 'Superfruits Valley', 'Malik', 'Perlis', '50')
+    INTO Farm (FarmID, FarmName, Owner, Locations, Dimensions)
+    VALUES ('015', 'Trong Leisure Farm', 'Hamdan', 'Terong', '85')
+SELECT * FROM DUAL;
+
+INSERT ALL
+    INTO Farmland (FieldID, FarmID, FarmlandName, Dimensions, SoilType)
+    VALUES (101, 001, 'North Field', 25, 'Loamy')
+    INTO Farmland (FieldID, FarmID, FarmlandName, Dimensions, SoilType)
+    VALUES (102, 001, 'South Field', 25, 'Sandy')
+    INTO Farmland (FieldID, FarmID, FarmlandName, Dimensions, SoilType)
+    VALUES (103, 002, 'East Field', 35, 'Clay')
+    INTO Farmland (FieldID, FarmID, FarmlandName, Dimensions, SoilType)
+    VALUES (104, 002, 'West Field', 40, 'Silty')
+    INTO Farmland (FieldID, FarmID, FarmlandName, Dimensions, SoilType)
+    VALUES (105, 003, 'Central Field', 50, 'Peaty')
+    INTO Farmland (FieldID, FarmID, FarmlandName, Dimensions, SoilType)
+    VALUES (106, 003, 'South Field', 50, 'Chalky')
+    INTO Farmland (FieldID, FarmID, FarmlandName, Dimensions, SoilType)
+    VALUES (107, 004, 'Upper Field', 20, 'Loamy')
+    INTO Farmland (FieldID, FarmID, FarmlandName, Dimensions, SoilType)
+    VALUES (108, 004, 'Lower Field', 22, 'Sandy')
+    INTO Farmland (FieldID, FarmID, FarmlandName, Dimensions, SoilType)
+    VALUES (109, 005, 'Valley Field', 28, 'Clay')
+    INTO Farmland (FieldID, FarmID, FarmlandName, Dimensions, SoilType)
+    VALUES (110, 005, 'Plateau Field', 32, 'Silty')
+    INTO Farmland (FieldID, FarmID, FarmlandName, Dimensions, SoilType)
+    VALUES (111, 006, 'Main Field', 26, 'Loamy')
+    INTO Farmland (FieldID, FarmID, FarmlandName, Dimensions, SoilType)
+    VALUES (112, 007, 'Border Field', 12.8, 'Sandy')
+    INTO Farmland (FieldID, FarmID, FarmlandName, Dimensions, SoilType)
+    VALUES (113, 008, 'Sunny Patch', 14.5, 'Clay')
+    INTO Farmland (FieldID, FarmID, FarmlandName, Dimensions, SoilType)
+    VALUES (114, 009, 'Green Patch', 16.0, 'Loamy')
+    INTO Farmland (FieldID, FarmID, FarmlandName, Dimensions, SoilType)
+    VALUES (115, 010, 'Blue Meadow', 18.2, 'Silty')
+SELECT * FROM DUAL;
+
+INSERT ALL
+    INTO Sensor (SensorID, FieldID, Types, InstallationDate, SensorStatus)
+    VALUES (201, 101, 'Temperature', TO_DATE('01-JAN-24'), 'Active')
+    INTO Sensor (SensorID, FieldID, Types, InstallationDate, SensorStatus)
+    VALUES (202, 102, 'Moisture', TO_DATE('02-JAN-24'), 'Active')
+    INTO Sensor (SensorID, FieldID, Types, InstallationDate, SensorStatus)
+    VALUES (203, 103, 'pH Sensor', TO_DATE('03-JAN-24'), 'Inactive')
+    INTO Sensor (SensorID, FieldID, Types, InstallationDate, SensorStatus)
+    VALUES (204, 104, 'Temperature', TO_DATE('04-JAN-24'), 'Active')
+    INTO Sensor (SensorID, FieldID, Types, InstallationDate, SensorStatus)
+    VALUES (205, 105, 'Moisture', TO_DATE('05-JAN-24'), 'Active')
+    INTO Sensor (SensorID, FieldID, Types, InstallationDate, SensorStatus)
+    VALUES (206, 106, 'Humidity', TO_DATE('06-JAN-24'), 'Active')
+    INTO Sensor (SensorID, FieldID, Types, InstallationDate, SensorStatus)
+    VALUES (207, 107, 'Temperature', TO_DATE('07-JAN-24'), 'Active')
+    INTO Sensor (SensorID, FieldID, Types, InstallationDate, SensorStatus)
+    VALUES (208, 108, 'Moisture', TO_DATE('08-JAN-24'), 'Active')
+    INTO Sensor (SensorID, FieldID, Types, InstallationDate, SensorStatus)
+    VALUES (209, 109, 'pH Sensor', TO_DATE('09-JAN-24'), 'Inactive')
+    INTO Sensor (SensorID, FieldID, Types, InstallationDate, SensorStatus)
+    VALUES (210, 110, 'Temperature', TO_DATE('10-JAN-24'), 'Active')
+    INTO Sensor (SensorID, FieldID, Types, InstallationDate, SensorStatus)
+    VALUES (211, 111, 'Humidity', TO_DATE('11-JAN-24'), 'Active')
+    INTO Sensor (SensorID, FieldID, Types, InstallationDate, SensorStatus)
+    VALUES (212, 112, 'Humidity', TO_DATE('12-JAN-24'), 'Inactive')
+    INTO Sensor (SensorID, FieldID, Types, InstallationDate, SensorStatus)
+    VALUES (213, 113, 'pH Sensor', TO_DATE('13-JAN-24'), 'Active')
+    INTO Sensor (SensorID, FieldID, Types, InstallationDate, SensorStatus)
+    VALUES (214, 114, 'Moisture', TO_DATE('14-JAN-24'), 'Active')
+    INTO Sensor (SensorID, FieldID, Types, InstallationDate, SensorStatus)
+    VALUES (215, 115, 'Temperature', TO_DATE('15-JAN-24'), 'Active')
+SELECT * FROM DUAL;
+
+INSERT ALL
+    INTO SensorReading (ReadingID, SensorID, DateTime, Readings)
+    VALUES (301, 201, TO_TIMESTAMP('2024-01-10 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), '28°C')
+    INTO SensorReading (ReadingID, SensorID, DateTime, Readings)
+    VALUES (302, 202, TO_TIMESTAMP('2024-01-10 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), '35%')
+    INTO SensorReading (ReadingID, SensorID, DateTime, Readings)
+    VALUES (303, 203, TO_TIMESTAMP('2024-01-10 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), '6.5')
+    INTO SensorReading (ReadingID, SensorID, DateTime, Readings)
+    VALUES (304, 204, TO_TIMESTAMP('2024-01-11 08:30:00', 'YYYY-MM-DD HH24:MI:SS'), '27°C')
+    INTO SensorReading (ReadingID, SensorID, DateTime, Readings)
+    VALUES (305, 205, TO_TIMESTAMP('2024-01-11 09:15:00', 'YYYY-MM-DD HH24:MI:SS'), '40%')
+    INTO SensorReading (ReadingID, SensorID, DateTime, Readings)
+    VALUES (306, 206, TO_TIMESTAMP('2024-01-11 10:45:00', 'YYYY-MM-DD HH24:MI:SS'), '58%')
+    INTO SensorReading (ReadingID, SensorID, DateTime, Readings)
+    VALUES (307, 201, TO_TIMESTAMP('2024-01-12 07:50:00', 'YYYY-MM-DD HH24:MI:SS'), '26°C')
+    INTO SensorReading (ReadingID, SensorID, DateTime, Readings)
+    VALUES (308, 202, TO_TIMESTAMP('2024-01-12 08:55:00', 'YYYY-MM-DD HH24:MI:SS'), '37%')
+    INTO SensorReading (ReadingID, SensorID, DateTime, Readings)
+    VALUES (309, 207, TO_TIMESTAMP('2024-01-12 16:20:00', 'YYYY-MM-DD HH24:MI:SS'), '6.8')
+    INTO SensorReading (ReadingID, SensorID, DateTime, Readings)
+    VALUES (310, 208, TO_TIMESTAMP('2024-01-13 17:40:00', 'YYYY-MM-DD HH24:MI:SS'), '25°C')
+    INTO SensorReading (ReadingID, SensorID, DateTime, Readings)
+    VALUES (311, 209, TO_TIMESTAMP('2024-01-13 18:25:00', 'YYYY-MM-DD HH24:MI:SS'), '41.7%')
+    INTO SensorReading (ReadingID, SensorID, DateTime, Readings)
+    VALUES (312, 210, TO_TIMESTAMP('2024-01-13 19:50:00', 'YYYY-MM-DD HH24:MI:SS'), '60.0%')
+    INTO SensorReading (ReadingID, SensorID, DateTime, Readings)
+    VALUES (313, 211, TO_TIMESTAMP('2024-01-14 20:10:00', 'YYYY-MM-DD HH24:MI:SS'), '6.9')
+    INTO SensorReading (ReadingID, SensorID, DateTime, Readings)
+    VALUES (314, 212, TO_TIMESTAMP('2024-01-14 21:35:00', 'YYYY-MM-DD HH24:MI:SS'), '57.0%')
+    INTO SensorReading (ReadingID, SensorID, DateTime, Readings)
+    VALUES (315, 213, TO_TIMESTAMP('2024-01-15 22:50:00', 'YYYY-MM-DD HH24:MI:SS'), '25°C')
+SELECT * FROM DUAL;
+
+INSERT ALL
+    INTO WeatherData (WeatherDataID, FieldID, WeatherDate, Temperature, Rainfall, Humidity)
+    VALUES (401, 101, TO_DATE('10-JAN-2024'), '28°C', '5mm', '60%')
+    INTO WeatherData (WeatherDataID, FieldID, WeatherDate, Temperature, Rainfall, Humidity)
+    VALUES (402, 102, TO_DATE('11-JAN-2024'), '30°C', '10mm', '55%')
+    INTO WeatherData (WeatherDataID, FieldID, WeatherDate, Temperature, Rainfall, Humidity)
+    VALUES (403, 103, TO_DATE('12-JAN-2024'), '25°C', '12mm', '65%')
+    INTO WeatherData (WeatherDataID, FieldID, WeatherDate, Temperature, Rainfall, Humidity)
+    VALUES (404, 104, TO_DATE('13-JAN-2024'), '27°C', '8mm', '58%')
+    INTO WeatherData (WeatherDataID, FieldID, WeatherDate, Temperature, Rainfall, Humidity)
+    VALUES (405, 105, TO_DATE('14-JAN-2024'), '29°C', '15mm', '70%')
+    INTO WeatherData (WeatherDataID, FieldID, WeatherDate, Temperature, Rainfall, Humidity)
+    VALUES (406, 106, TO_DATE('15-JAN-2024'), '26°C', '6mm', '62%')
+    INTO WeatherData (WeatherDataID, FieldID, WeatherDate, Temperature, Rainfall, Humidity)
+    VALUES (407, 107, TO_DATE('16-JAN-2024'), '31.0°C', '20.0mm', '50.0%')
+    INTO WeatherData (WeatherDataID, FieldID, WeatherDate, Temperature, Rainfall, Humidity)
+    VALUES (408, 108, TO_DATE('17-JAN-2024'), '24.8°C', '11.0mm', '66.0%')
+    INTO WeatherData (WeatherDataID, FieldID, WeatherDate, Temperature, Rainfall, Humidity)
+    VALUES (409, 109, TO_DATE('18-JAN-2024'), '28.0°C', '14.0mm', '61.0%')
+    INTO WeatherData (WeatherDataID, FieldID, WeatherDate, Temperature, Rainfall, Humidity)
+    VALUES (410, 110, TO_DATE('19-JAN-2024'), '32.5°C', '7.0mm', '54.0%')
+    INTO WeatherData (WeatherDataID, FieldID, WeatherDate, Temperature, Rainfall, Humidity)
+    VALUES (411, 111, TO_DATE('20-JAN-2024'), '27.3°C', '13.0mm', '60.5%')
+    INTO WeatherData (WeatherDataID, FieldID, WeatherDate, Temperature, Rainfall, Humidity)
+    VALUES (412, 112, TO_DATE('21-JAN-2024'), '25.6°C', '16.0mm', '63.0%')
+    INTO WeatherData (WeatherDataID, FieldID, WeatherDate, Temperature, Rainfall, Humidity)
+    VALUES (413, 113, TO_DATE('22-JAN-2024'), '29.9°C', '18.0mm', '55.0%')
+    INTO WeatherData (WeatherDataID, FieldID, WeatherDate, Temperature, Rainfall, Humidity)
+    VALUES (414, 114, TO_DATE('23-JAN-2024'), '30.4°C', '22.0mm', '57.0%')
+    INTO WeatherData (WeatherDataID, FieldID, WeatherDate, Temperature, Rainfall, Humidity)
+    VALUES (415, 115, TO_DATE('24-JAN-2024'), '26.7°C', '12.5mm', '64.0%')
+SELECT * FROM DUAL;
+
+INSERT ALL
+    INTO SoilData (SoilDataID, FieldID, SoilDate, MoistureLevel, pHLevel, NutrientContent)
+    VALUES (501, 101, TO_DATE('10-JAN-24'), '40%', 6.5, 'High')
+    INTO SoilData (SoilDataID, FieldID, SoilDate, MoistureLevel, pHLevel, NutrientContent)
+    VALUES (502, 102, TO_DATE('11-JAN-24'), '35%', 6.0, 'Medium')
+    INTO SoilData (SoilDataID, FieldID, SoilDate, MoistureLevel, pHLevel, NutrientContent)
+    VALUES (503, 103, TO_DATE('12-JAN-24'), '45%', 6.8, 'Low')
+    INTO SoilData (SoilDataID, FieldID, SoilDate, MoistureLevel, pHLevel, NutrientContent)
+    VALUES (504, 104, TO_DATE('13-JAN-24'), '50%', 7.0, 'High')
+    INTO SoilData (SoilDataID, FieldID, SoilDate, MoistureLevel, pHLevel, NutrientContent)
+    VALUES (505, 105, TO_DATE('14-JAN-24'), '38%', 6.3, 'Medium')
+    INTO SoilData (SoilDataID, FieldID, SoilDate, MoistureLevel, pHLevel, NutrientContent)
+    VALUES (506, 106, TO_DATE('15-JAN-24'), '42%', 6.7, 'Low')
+    INTO SoilData (SoilDataID, FieldID, SoilDate, MoistureLevel, pHLevel, NutrientContent)
+    VALUES (507, 107, TO_DATE('16-JAN-24'), '44.5%', 7.2, 'High')
+    INTO SoilData (SoilDataID, FieldID, SoilDate, MoistureLevel, pHLevel, NutrientContent)
+    VALUES (508, 108, TO_DATE('17-JAN-24'), '37.9%', 6.1, 'Medium')
+    INTO SoilData (SoilDataID, FieldID, SoilDate, MoistureLevel, pHLevel, NutrientContent)
+    VALUES (509, 109, TO_DATE('18-JAN-24'), '43.0%', 6.9, 'High')
+    INTO SoilData (SoilDataID, FieldID, SoilDate, MoistureLevel, pHLevel, NutrientContent)
+    VALUES (510, 110, TO_DATE('19-JAN-24'), '40.2%', 6.6, 'Medium')
+    INTO SoilData (SoilDataID, FieldID, SoilDate, MoistureLevel, pHLevel, NutrientContent)
+    VALUES (511, 111, TO_DATE('20-JAN-24'), '41.7%', 6.5, 'Low')
+    INTO SoilData (SoilDataID, FieldID, SoilDate, MoistureLevel, pHLevel, NutrientContent)
+    VALUES (512, 112, TO_DATE('21-JAN-24'), '42.8%', 7.1, 'High')
+    INTO SoilData (SoilDataID, FieldID, SoilDate, MoistureLevel, pHLevel, NutrientContent)
+    VALUES (513, 113, TO_DATE('22-JAN-24'), '39.3%', 6.4, 'Medium')
+    INTO SoilData (SoilDataID, FieldID, SoilDate, MoistureLevel, pHLevel, NutrientContent)
+    VALUES (514, 114, TO_DATE('23-JAN-24'), '44.0%', 6.8, 'High')
+    INTO SoilData (SoilDataID, FieldID, SoilDate, MoistureLevel, pHLevel, NutrientContent)
+    VALUES (515, 115, TO_DATE('24-JAN-24'), '42.5%', 6.7, 'Low')
+SELECT * FROM DUAL;
+
